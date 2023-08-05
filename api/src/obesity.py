@@ -10,7 +10,7 @@ from src.custom_functions import custom_calculus, select_data
 
 class PersonObesity(BaseModel):
     age: int = 18
-    gender: str = Field(..., description="Género de la persona", regex="^(female|male)$")
+    gender: str = Field(..., description="Género de la persona", pattern="^(female|male)$")
     weight: confloat(gt=0) 
     height: confloat(gt=0)
     waist_circum_preferred: confloat(gt=0) 

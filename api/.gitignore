@@ -1,1 +1,8 @@
 .space
+apivenv
+__pycahe__
+src/__pycahe__
+.dockerignore
+Dockerfile
+requirements copy.txt
+vercel.json

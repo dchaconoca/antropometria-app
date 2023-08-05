@@ -5,6 +5,7 @@ app = FastAPI()
 
 @app.get("/")
 def read_root():
+    print('hola')
     return {'message': 'API Medidas Antropométricas'}
 
 @app.post('/obesity')
