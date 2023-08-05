@@ -6,7 +6,7 @@ from PIL import Image
 st.set_page_config(page_title='dIAna', page_icon=None, 
                    layout="centered", initial_sidebar_state="auto", menu_items=None)
 
-URL_BASE = 'https://antropometryapi-1-j5921693.deta.app'
+URL_BASE = 'https://antropo-api-registry-ft3evlkfyq-rj.a.run.app'
 
 #URL_BASE = 'http://127.0.0.1:8000'
 
