@@ -138,3 +138,5 @@ if submit:
       col2.metric('Cintura y grasa abdominal:', result['cc'], help=CC_HELP)
       col3.metric('Relación Cintura y Cadera:', result['rcc'], help=RCC_HELP)
       col4.metric('Relación Cintura y Estatura:', result['ict'], help=ICT_HELP)
+
+st.markdown(':orange[**Nota:** Esto es un ejercicio de ciencia de datos. Los resultados NO deben tomarse como la opinión de un especialista. Consulte a su médico si tiene dudas.]')
