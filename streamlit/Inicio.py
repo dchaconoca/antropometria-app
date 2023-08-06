@@ -3,8 +3,19 @@ import requests
 import json
 from PIL import Image
 
-st.set_page_config(page_title='dIAna', page_icon=None, 
-                   layout="centered", initial_sidebar_state="auto", menu_items=None)
+st.set_page_config(
+    page_title='dIAna Antropometría y Obesidad', 
+    page_icon=':health_worker:', 
+    layout="centered", 
+    initial_sidebar_state="auto", 
+    menu_items={
+         'Get Help': None,
+         'Report a bug': None,
+         'About': '''## Medidas Antropométricas para el predecir el riesgo de obesidad y ENT 
+         
+         Aplicación hecha por Diana Chacón Ocariz'''
+     }
+)
 
 URL_BASE = 'https://antropo-api-registry-ft3evlkfyq-rj.a.run.app'
 
@@ -139,4 +150,4 @@ if submit:
       col3.metric('Relación Cintura y Cadera:', result['rcc'], help=RCC_HELP)
       col4.metric('Relación Cintura y Estatura:', result['ict'], help=ICT_HELP)
 
-st.markdown(':orange[**Nota:** Esto es un ejercicio de ciencia de datos. Los resultados NO deben tomarse como la opinión de un especialista. Consulte a su médico si tiene dudas.]')
+st.markdown(':orange[**Nota:** Esto es un ejercicio de ciencia de datos. Los resultados NO deben tomarse como la opinión de un especialista. Consulta a tu médico si tienes dudas.]')
