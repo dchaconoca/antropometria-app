@@ -54,7 +54,7 @@ def calcul_risk():
                   
       person = {
              'age': age,
-             'gender': ('male' if gender==0 else 'female'),
+             'gender': ('male' if gender=='Masculino' else 'female'),
              'weight': weight,
              'height': height,
              'waist_circum_preferred': waist_circum_preferred,
@@ -126,28 +126,40 @@ with col2:
       if submit:
             result = calcul_risk()
 
+if submit:
+            
             result = result[0]
 
             if result['obesity'] == 0:
                   st.subheader(':green[¡Excelente!] :smiley:')
-                  st.markdown('No tienes sobrepeso ni corres el riesgo de padecer ENT.')
-                  st.markdown('Sigue ejercitándote y manteniendo una dieta saludable.')
+                  st.markdown('**No tienes sobrepeso ni corres el riesgo de padecer ENT.**')
+                  st.markdown('**Sigue ejercitándote y manteniendo una dieta saludable.**')
 
             if result['obesity'] == 1:
                   st.subheader(':orange[¡Hay cosas que mejorar!] :confused:')
-                  st.markdown('Tienes algo de sobrepeso y puede que desarrolles alguna ENT.')
-                  st.markdown('Ejercítate un poco más y mejora tu alimentación. Consulta a tu médico si es necesario.')
+                  st.markdown('**Tienes algo de sobrepeso y puede que desarrolles alguna ENT.**')
+                  st.markdown('**Ejercítate un poco más y mejora tu alimentación. Consulta a tu médico si es necesario.**')
 
             if result['obesity'] == 2:
                   st.subheader(':red[¡Ay!...] :worried:')
-                  st.markdown('Tienes sobrepeso/obesidad. Corres el riesgo de padecer alguna ENT.')
-                  st.markdown('Lo mejor será consultar a tu médico.')
+                  st.markdown('**Tienes sobrepeso/obesidad. Corres el riesgo de padecer alguna ENT.**')
+                  st.markdown('**Lo mejor será consultar a tu médico.**')
       
 if submit:
       col1, col2, col3, col4 = st.columns((1,1,1,1))
-      col1.metric(label='Índice de Masa Corporal:', value=result['bmi'], help=BMI_HELP)
-      col2.metric('Cintura y grasa abdominal:', result['cc'], help=CC_HELP)
-      col3.metric('Relación Cintura y Cadera:', result['rcc'], help=RCC_HELP)
-      col4.metric('Relación Cintura y Estatura:', result['ict'], help=ICT_HELP)
+      col1.markdown(':blue[**Índice de Masa Corporal**]', help=BMI_HELP)
+      col2.markdown(':blue[**Cintura y grasa abdominal**]', help=CC_HELP)
+      col3.markdown(':blue[**Relación Cintura y Cadera**]', help=RCC_HELP)
+      col4.markdown(':blue[**Relación Cintura y Estatura**]', help=ICT_HELP)
+
+      col1.metric(label=' ', value=round(result['bmi'], 2), label_visibility='hidden')
+      col2.metric(label=' ', value=round(result['waist_circum_preferred'], 2), label_visibility='hidden')
+      col3.metric(label=' ', value=round(result['rcc'], 2), label_visibility='hidden')
+      col4.metric(label=' ', value=round(result['ict'], 2), label_visibility='hidden')
+
+      col1.metric(label=' ', value=result['obesity_bmi_txt'], help=BMI_HELP, label_visibility='hidden')
+      col2.metric(label=' ', value=result['obesity_cc_txt'], help=CC_HELP, label_visibility='hidden')
+      col3.metric(label=' ', value=result['obesity_rcc_txt'], help=RCC_HELP, label_visibility='hidden')
+      col4.metric(label=' ', value=result['obesity_ict_txt'], help=ICT_HELP, label_visibility='hidden')
 
 st.markdown(':orange[**Nota:** Esto es un ejercicio de ciencia de datos. Los resultados NO deben tomarse como la opinión de un especialista. Consulta a tu médico si tienes dudas.]')
