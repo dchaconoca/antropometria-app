@@ -31,9 +31,7 @@ def make_obesity_prediction(person: PersonObesity):
         trained_model = pickle.load(f)
 
     df['obesity'] = trained_model.predict(df_transformed) 
-    # df_transformed.columns = ['age', 'gender', 
-    #                         'cc', 'bmi', 'rcc', 
-    #                         'ict', 'obesity']
+  
     result = df.to_dict(orient = 'records')
 
     return result
