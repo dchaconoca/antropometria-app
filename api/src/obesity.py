@@ -27,14 +27,14 @@ def make_obesity_prediction(person: PersonObesity):
     cols_to_leave = ['age', 'gender_bin', 'obesity_cc', 'obesity_bmi', 'obesity_rcc', 'obesity_ict']  
     df_transformed = select_data(df_transformed, [], cols_to_leave)
 
-    with open(f"{CURRENT_DIR}/ml_models/dtree_obesity.pkl", "rb") as f:
+    with open(f"{CURRENT_DIR}/ml_models/rf_obesity.pkl", "rb") as f:
         trained_model = pickle.load(f)
 
-    df_transformed['obesity'] = trained_model.predict(df_transformed) 
-    df_transformed.columns = ['age', 'gender', 
-                            'cc', 'bmi', 'rcc', 
-                            'ict', 'obesity']
-    result = df_transformed.to_dict(orient = 'records')
+    df['obesity'] = trained_model.predict(df_transformed) 
+    # df_transformed.columns = ['age', 'gender', 
+    #                         'cc', 'bmi', 'rcc', 
+    #                         'ict', 'obesity']
+    result = df.to_dict(orient = 'records')
 
     return result
 
