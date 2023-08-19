@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from src.obesity import make_obesity_prediction, PersonObesity
+import src.obesity as ob
 
 app = FastAPI() 
 
@@ -8,8 +8,47 @@ def read_root():
     print('hola')
     return {'message': 'API Medidas Antropométricas'}
 
-@app.post('/obesity')
-async def obesity_prediction(person: PersonObesity):
-    result = make_obesity_prediction(person)
+# Return obesity prediction for a person
+@app.get('/obesity_prediction')
+async def obesity_prediction(person: ob.PersonObesity):
+    result = ob.make_obesity_prediction(person)
     return result
 
+# Return all data for obesity
+@app.get('/obesity_data')
+async def return_obesity_data():
+    result = ob.return_data_obesity()
+    items = result.to_dict(orient = 'records')
+    validated_items = [ob.ObesityTable(**item) for item in items]
+    return validated_items
+
+# Save all data for obesity
+# @app.post('/obesity_data')
+# async def save_obesity_data(data):
+#     result = ob.return_data_obesity()
+#     result = result.to_dict(orient = 'records')
+#     return result
+
+# Update obesity variable in obesity table
+@app.patch('/obesity_data')
+async def update_obesity(params: ob.ParamsObesity):
+    result = ob.update_obesity(params)
+
+# Make obesity etl and return all data
+@app.post('/obesity_data_etl/{replace}')
+async def obesity_data_etl(replace: bool):
+    result = ob.make_obesity_data_etl(replace)
+    #result = result.to_dict(orient = 'records')
+    return result
+
+# Create KModes clusters
+@app.post('/clusters_kmodes')
+async def clusters_kmodes(params: ob.ParamsKModes):
+    result = ob.make_clusters_kmodes(params)
+    return result
+
+# Return number of clusters
+@app.get('/nb_clusters')
+async def return_nb_clusters():
+    result = ob.return_number_clusters()
+    return result

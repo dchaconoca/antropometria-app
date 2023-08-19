@@ -1,18 +1,10 @@
 import streamlit as st
 
-st.set_page_config(
-    page_title='dIAna Antropometría y Obesidad', 
-    page_icon=':health_worker:', 
-    layout="centered", 
-    initial_sidebar_state="auto", 
-    menu_items={
-         'Get Help': None,
-         'Report a bug': None,
-         'About': '''## Medidas Antropométricas para el predecir el riesgo de obesidad y ENT 
-         
-         Aplicación hecha por Diana Chacón Ocariz'''
-     }
-)
+from src.app_config import page_config, sidebar_config
+
+page_config()
+
+sidebar_config()
 
 st.header('Estudio del sobrepeso y la obesidad y su incidencia en las ENT:')
 
@@ -44,9 +36,9 @@ st.markdown(
     Luego, existen tablas que permiten clasificar el grado de sobrepeso y obesidad y el riesgo de tener exceso de grasa abdominal, en función de los valores obtenidos:
 
     
-    1. Clasificación de obesidad según el BMI:
+    1. Clasificación de obesidad según el IMC:
 
-    |Riesgo|BMI|
+    |Riesgo|IMC|
     |------|---------|
     |Peso bajo | < 18.5 |
     |Peso normal|18.5 - 25 |

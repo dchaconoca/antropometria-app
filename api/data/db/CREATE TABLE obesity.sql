@@ -1,0 +1,31 @@
+-- obesity definition
+
+CREATE TABLE "obesity" (
+  "age" REAL,
+  "age_range" TEXT,
+  "gender" TEXT,
+  "height" REAL,
+  "weight" REAL,
+  "waist_circum_preferred" REAL,
+  "hip_circum" REAL,
+  "gender_bin" INTEGER,
+  "bmi" REAL,
+  "rcc" REAL,
+  "ict" REAL,
+  "obesity_bmi" INTEGER,
+  "obesity_bmi_txt" TEXT,
+  "obesity_cc" INTEGER,
+  "obesity_cc_txt" TEXT,
+  "obesity_rcc" INTEGER,
+  "obesity_rcc_txt" TEXT,
+  "obesity_ict" INTEGER,
+  "obesity_ict_txt" TEXT,
+  "risk_factors" INTEGER,
+  "creation_date" TIMESTAMP,
+  "obesity" INTEGER,
+  "obesity_date" TIMESTAMP,
+  "predicted" INTEGER,
+  "prediction_date" TIMESTAMP,
+  "cluster" INTEGER,
+  "cluster_kmodes_date" TIMESTAMP
+);
