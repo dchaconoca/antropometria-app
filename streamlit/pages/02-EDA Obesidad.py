@@ -8,7 +8,7 @@ import pandas as pd
 
 from src.call_api import obesity_data_etl, obesity_return_data
 import src.eda_functions as ef
-import src.char_common_functions as ccf
+import src.chart_common_functions as ccf
 
 from src.app_config import page_config, sidebar_config
 
@@ -29,13 +29,13 @@ st.markdown('''
 
 
 result = obesity_return_data()
+
 # st.write(result)
 # df_obesity = pd.read_json(result, orient='records')
 
 if result:
 
-    buffer = io.BytesIO(result)
-    df_obesity = pd.read_json(buffer, orient='records')
+    df_obesity = pd.read_json(result, orient='records')
 
     df_eda_f = ef.divide_by_gender(df_obesity, 'female')
     df_eda_m = ef.divide_by_gender(df_obesity, 'male')

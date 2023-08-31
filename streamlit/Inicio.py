@@ -8,7 +8,6 @@ page_config()
 
 sidebar_config()
 
-
 st.subheader('¿Tienes algún riesgo de padecer sobrepeso y/o enfermedades no transmisibles?')
 
 st.markdown(

@@ -1,5 +1,6 @@
 import requests
 import json
+import io
 
 import streamlit as st
 
@@ -71,8 +72,8 @@ def obesity_return_data():
             response = requests.get(url,
                               headers={'Content-Type': 'application/json'},
                               timeout=8000)
-            
-            return response.content
+            result = io.BytesIO(response.content)
+            return result
       
       except requests.exceptions.RequestException as e:
             # Manejar errores de solicitud (por ejemplo, problemas de red)

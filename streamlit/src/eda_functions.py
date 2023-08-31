@@ -3,7 +3,7 @@ import matplotlib.ticker as ticker
 import seaborn as sns
 import altair as alt 
 
-import src.char_common_functions as ccf
+import src.chart_common_functions as ccf
 
 def divide_by_gender(df, val):
 
@@ -15,11 +15,7 @@ def divide_by_gender(df, val):
 
 def correlation(df):
 
-    #sns.set_palette("husl") 
-
     colormap = sns.color_palette('Oranges')
-    #sns.dark_palette((20, 60, 50), input="husl") 
-    #sns.diverging_palette(250, 30, l=65, center="dark", as_cmap=True)
 
     corr_df = df.corr(method='pearson', numeric_only=True)
 
@@ -41,9 +37,9 @@ def bmi_char(df, df_eda_f, df_eda_m):
     title_x = 'Total individuos'
     title_y = 'Rangos de Edad'
 
-    char_todo = ccf.char_bars(df, x, y, detail, title, title_x, title_y)
-    char_f = ccf.char_bars(df_eda_f, x, y, detail, title_f, title_x, title_y)
-    char_m = ccf.char_bars(df_eda_m, x, y, detail, title_m, title_x, title_y)
+    char_todo = ccf.bars_chart(df, x, y, detail, title, title_x, title_y)
+    char_f = ccf.bars_chart(df_eda_f, x, y, detail, title_f, title_x, title_y)
+    char_m = ccf.bars_chart(df_eda_m, x, y, detail, title_m, title_x, title_y)
 
     char_total = alt.vconcat(char_todo, char_f, char_m)
 
@@ -61,9 +57,9 @@ def ict_char(df, df_eda_f, df_eda_m):
     title_x = 'Total individuos'
     title_y = 'Rangos de Edad'
 
-    char_todo = ccf.char_bars(df, x, y, detail, title, title_x, title_y)
-    char_f = ccf.char_bars(df_eda_f, x, y, detail, title_f, title_x, title_y)
-    char_m = ccf.char_bars(df_eda_m, x, y, detail, title_m, title_x, title_y)
+    char_todo = ccf.bars_chart(df, x, y, detail, title, title_x, title_y)
+    char_f = ccf.bars_chart(df_eda_f, x, y, detail, title_f, title_x, title_y)
+    char_m = ccf.bars_chart(df_eda_m, x, y, detail, title_m, title_x, title_y)
 
     char_total = alt.vconcat(char_todo, char_f, char_m)
 
@@ -81,9 +77,9 @@ def rcc_char(df, df_eda_f, df_eda_m):
     title_x = 'Total individuos'
     title_y = 'Rangos de Edad'
 
-    char_todo = ccf.char_bars(df, x, y, detail, title, title_x, title_y)
-    char_f = ccf.char_bars(df_eda_f, x, y, detail, title_f, title_x, title_y)
-    char_m = ccf.char_bars(df_eda_m, x, y, detail, title_m, title_x, title_y)
+    char_todo = ccf.bars_chart(df, x, y, detail, title, title_x, title_y)
+    char_f = ccf.bars_chart(df_eda_f, x, y, detail, title_f, title_x, title_y)
+    char_m = ccf.bars_chart(df_eda_m, x, y, detail, title_m, title_x, title_y)
 
     char_total = alt.vconcat(char_todo, char_f, char_m)
 
@@ -101,9 +97,9 @@ def cc_char(df, df_eda_f, df_eda_m):
     title_x = 'Total individuos'
     title_y = 'Rangos de Edad'
 
-    char_todo = ccf.char_bars(df, x, y, detail, title, title_x, title_y)
-    char_f = ccf.char_bars(df_eda_f, x, y, detail, title_f, title_x, title_y)
-    char_m = ccf.char_bars(df_eda_m, x, y, detail, title_m, title_x, title_y)
+    char_todo = ccf.bars_chart(df, x, y, detail, title, title_x, title_y)
+    char_f = ccf.bars_chart(df_eda_f, x, y, detail, title_f, title_x, title_y)
+    char_m = ccf.bars_chart(df_eda_m, x, y, detail, title_m, title_x, title_y)
 
     char_total = alt.vconcat(char_todo, char_f, char_m)
 
@@ -121,9 +117,9 @@ def risks_char(df, df_eda_f, df_eda_m):
     title_x = 'Total individuos'
     title_y = 'Rangos de Edad'
 
-    char_todo = ccf.char_bars(df, x, y, detail, title, title_x, title_y)
-    char_f = ccf.char_bars(df_eda_f, x, y, detail, title_f, title_x, title_y)
-    char_m = ccf.char_bars(df_eda_m, x, y, detail, title_m, title_x, title_y)
+    char_todo = ccf.bars_chart(df, x, y, detail, title, title_x, title_y)
+    char_f = ccf.bars_chart(df_eda_f, x, y, detail, title_f, title_x, title_y)
+    char_m = ccf.bars_chart(df_eda_m, x, y, detail, title_m, title_x, title_y)
 
     char_total = alt.vconcat(char_todo, char_f, char_m)
 

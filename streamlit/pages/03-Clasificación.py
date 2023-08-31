@@ -1,14 +1,12 @@
 # Carga de librerías
 
-import io
-
 import streamlit as st
 
 import pandas as pd
 
 from src.call_api import obesity_clusters_kmodes, obesity_return_data
 import src.clustering_functions as cf
-import src.char_common_functions as ccf
+import src.chart_common_functions as ccf
 
 from src.app_config import page_config, sidebar_config
 
@@ -96,11 +94,19 @@ if submit:
 
     result = obesity_return_data()
 
-    #buffer = io.BytesIO(result)
-
     df_obesity = pd.read_json(result, orient='records')
 
-    st.pyplot(ccf.chars_clusters_factors(df_obesity, -1))
-    st.altair_chart(cf.clusters_char(df_obesity), theme=None)
-    st.pyplot(ccf.num_var_correl(df_obesity, 'cluster'))
+    df_num_cluster = pd.DataFrame(df_obesity.groupby('cluster')['age'].count())
+    df_num_cluster.rename(columns={'age': 'num_people'}, inplace=True) 
+    df_num_cluster.reset_index(inplace=True)
+
+    theta = 'num_people:Q'
+    category = 'cluster:N'
+    title = 'Cantidad de personas por cluster o grupo'
+
+    st.altair_chart(ccf.pie_chart(df_num_cluster, theta, category, title))
+
+    st.pyplot(cf.clusters_factors_charts(df_obesity, -1))
+    st.altair_chart(cf.clusters_chart(df_obesity), theme=None)
+    #st.pyplot(ccf.num_var_correl(df_obesity, 'cluster'))
     st.pyplot(ccf.distribution_var_categ(df_obesity, 'cluster'))
