@@ -22,6 +22,32 @@ class PersonObesity(BaseModel):
     waist_circum_preferred: confloat(gt=0) 
     hip_circum: confloat(gt=0) 
 
+class PredictedObesityTable(BaseModel):
+    age: float
+    age_range: constr(regex='^(17-25|26-35|36-45|46-55|56-65|66-100)$')
+    gender:  str = Field(..., description="Género de la persona", pattern="^(female|male)$")
+    height: float
+    weight: float
+    waist_circum_preferred: float
+    hip_circum: float
+    gender_bin: int
+    bmi: float
+    rcc: float
+    ict: float
+    obesity_bmi: int
+    obesity_bmi_txt: str
+    obesity_cc: int
+    obesity_cc_txt: str
+    obesity_rcc: int
+    obesity_rcc_txt: str
+    obesity_ict: int
+    obesity_ict_txt: str
+    risk_factors: int
+    obesity: int
+    real_obesity: Optional[int] = None
+    comment: Optional[str] = None
+    creation_date: Optional[datetime.datetime] = None
+
 class ObesityTable(BaseModel):
     age: float
     age_range: constr(regex='^(17-25|26-35|36-45|46-55|56-65|66-100)$')
@@ -43,11 +69,9 @@ class ObesityTable(BaseModel):
     obesity_ict: int
     obesity_ict_txt: str
     risk_factors: int
-    creation_date: Optional[datetime.datetime] = None
+    creation_date: datetime.datetime
     obesity: Optional[int] = None
     obesity_date: Optional[datetime.datetime] = None
-    predicted: bool
-    prediction_date: Optional[datetime.datetime] = None
     cluster: Optional[int] = None
     cluster_kmodes_date: Optional[datetime.datetime] = None
 
@@ -65,10 +89,10 @@ class ParamsObesity(BaseModel):
     rcc: Optional[int] = None
     ict: Optional[int] = None
 
-def save_data_obesity(df, repĺace=True):
+def save_data_obesity(df, table, repĺace=True):
     conn = open_connection()
     action = ('replace' if repĺace else 'append') 
-    df.to_sql('obesity', conn, if_exists=action, index=False)
+    df.to_sql(table, conn, if_exists=action, index=False)
     close_connection(conn)
 
 def update_data_obesity(query):
@@ -103,18 +127,12 @@ def make_obesity_prediction(person: PersonObesity):
         trained_model = pickle.load(f)
 
     df['obesity'] = trained_model.predict(df_transformed) 
-    df['obesity_date'] = datetime.datetime.now()
-    df['creation_date'] = datetime.datetime.now()
-    df['predicted'] = True
-    df['prediction_date'] = datetime.datetime.now()
     df['age_range'] = calc_age_range(person['age'])
-    df['cluster'] = None
-    df['cluster_kmodes_date'] = None
 
-    save_data_obesity(df, False)
+    # save_data_obesity(df, 'PredictedObesity', False)
  
     items = df.to_dict(orient = 'records')
-    validated_items = [ObesityTable(**item) for item in items]
+    validated_items = [PredictedObesityTable(**item) for item in items]
     return validated_items
 
 def make_obesity_data_etl(replace=True):
@@ -139,12 +157,10 @@ def make_obesity_data_etl(replace=True):
         df_obesity['creation_date'] = datetime.datetime.now() 
         df_obesity['obesity']= None
         df_obesity['obesity_date'] = None
-        df_obesity['predicted'] = False 
-        df_obesity['prediction_date'] = None
         df_obesity['cluster'] = None
         df_obesity['cluster_kmodes_date'] = None
                 
-        save_data_obesity(df_obesity, replace)
+        save_data_obesity(df_obesity, 'Obesity', replace)
         
     result = return_data_obesity()
 
@@ -163,7 +179,7 @@ def make_clusters_kmodes(params: ParamsKModes):
                                                      params['random_state'])
     
     df_obesity['cluster_kmodes_date'] = datetime.datetime.now() 
-    save_data_obesity(df_obesity)
+    save_data_obesity(df_obesity, 'Obesity')
 
     return metrics
 
@@ -186,5 +202,17 @@ def update_obesity(params: ParamsObesity):
 
     return update_data_obesity(query)
 
+def save_obesity_predicted(info: PredictedObesityTable):
+
+    info = info.dict()
+
+    df = pd.DataFrame(info, index=[0])
+    df['creation_date'] = datetime.datetime.now()
+    
+    save_data_obesity(df, 'PredictedObesity', False)
+
+    items = df.to_dict(orient = 'records')
+    validated_items = [PredictedObesityTable(**item) for item in items]
+    return validated_items
     
 

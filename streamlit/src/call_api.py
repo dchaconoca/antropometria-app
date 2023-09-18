@@ -36,6 +36,33 @@ def obesity_prediction(person):
             st.error("Error inesperado: " + str(e))
             st.stop()
 
+def save_obesity_info(info):
+      
+      url = URL_BASE + '/obesity_prediction'                  
+      info = json.dumps(info) 
+
+      try:
+            response = requests.post(url,
+                              headers={'Content-Type': 'application/json'},
+                              data=info,
+                              timeout=8000)
+            return json.loads(response.content)
+      
+      except requests.exceptions.RequestException as e:
+            # Manejar errores de solicitud (por ejemplo, problemas de red)
+            st.error("Error de solicitud a la API: " + str(e))
+            st.stop()
+
+      except requests.exceptions.HTTPError as e:
+            # Manejar errores de respuesta HTTP (por ejemplo, códigos de estado no exitosos)
+            st.error("Error HTTP de la API: " + str(e))
+            st.stop()
+
+      except Exception as e:
+            # Manejar cualquier otro error inesperado
+            st.error("Error inesperado: " + str(e))
+            st.stop()
+
 
 def obesity_data_etl(replace):
       
@@ -46,7 +73,8 @@ def obesity_data_etl(replace):
                               headers={'Content-Type': 'application/json'},
                               timeout=8000)
             
-            return response.content
+            result = io.BytesIO(response.content)
+            return result
       
       except requests.exceptions.RequestException as e:
             # Manejar errores de solicitud (por ejemplo, problemas de red)

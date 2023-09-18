@@ -14,6 +14,12 @@ async def obesity_prediction(person: ob.PersonObesity):
     result = ob.make_obesity_prediction(person)
     return result
 
+# Save obesity prediction and real information
+@app.post('/obesity_prediction')
+async def save_obesity_information(info: ob.PredictedObesityTable):
+    result = ob.save_obesity_predicted(info)
+    return result
+
 # Return all data for obesity
 @app.get('/obesity_data')
 async def return_obesity_data():

@@ -2,6 +2,8 @@
 ## Char Common Functions
 #################################
 
+import re
+
 import streamlit as st
 
 import pandas as pd
@@ -12,6 +14,7 @@ import matplotlib.ticker as ticker
 import seaborn as sns
 import altair as alt 
 
+from src.app_config import LABEL_SIZE, TITLE_SIZE
 
 # Gráfico de distribución para cada variable numérica
 def num_var_distribution(df):
@@ -32,14 +35,18 @@ def num_var_distribution(df):
             alpha    = 0.3,
             ax       = axes[i]
         )
-        axes[i].set_title(colum, fontsize = 12, fontweight = "bold")
-        axes[i].tick_params(labelsize = 8)
+        axes[i].set_title(colum, fontsize = LABEL_SIZE, fontweight = "bold")
+        axes[i].tick_params(labelsize = LABEL_SIZE)
         axes[i].set_xlabel("")
 
 
+    # Se eliminan los axes vacíos
+    for i in [6, 7, 8]:
+        fig.delaxes(axes[i])
+
     fig.tight_layout()
     plt.subplots_adjust(top = 0.9)
-    fig.suptitle('Distribución variables numéricas', fontsize = 20, fontweight = "bold")
+    fig.suptitle('Distribución variables numéricas', fontsize = TITLE_SIZE, fontweight = "bold")
 
     return fig
 
@@ -47,11 +54,13 @@ def num_var_distribution(df):
 # Gráfico de la correlación de una variable dada con respecto a cada variable numérica 
 def num_var_correl(df, col):
 
-    fig, axes = plt.subplots(nrows=4, ncols=3, figsize=(12, 10))
+    fig, axes = plt.subplots(nrows=3, ncols=3, figsize=(12, 10))
     axes = axes.flat
-    col_num = df.select_dtypes(include=['float64']).columns
-    if col in col_num: #df[col].dtype == np.float64 or df[col].dtype == np.int: 
-        col_num = col_num.drop(col)
+    cols = df.select_dtypes(include=['float64']).columns
+    if col in cols: #df[col].dtype == np.float64 or df[col].dtype == np.int: 
+        cols = cols.drop(col)
+
+    col_num = [col for col in cols if not re.search('date$', col)]
 
     for i, colum in enumerate(col_num):
         sns.regplot(
@@ -63,17 +72,17 @@ def num_var_correl(df, col):
             line_kws    = {"color":"r","alpha":0.7},
             ax          = axes[i]
         )
-        axes[i].set_title(f"{col} vs {colum}", fontsize = 12, fontweight = "bold")
+        axes[i].set_title(f"{col} vs {colum}", fontsize = LABEL_SIZE, fontweight = "bold")
         axes[i].ticklabel_format(style='sci', scilimits=(-4,4), axis='both')
         axes[i].yaxis.set_major_formatter(ticker.EngFormatter())
         axes[i].xaxis.set_major_formatter(ticker.EngFormatter())
-        axes[i].tick_params(labelsize = 8)
+        axes[i].tick_params(labelsize = LABEL_SIZE)
         axes[i].set_xlabel("")
         axes[i].set_ylabel("")
 
     fig.tight_layout()
     plt.subplots_adjust(top=0.9)
-    fig.suptitle(f"Correlación con {col}", fontsize = 20, fontweight = "bold")
+    fig.suptitle(f"Correlación con {col}", fontsize = TITLE_SIZE, fontweight = "bold")
 
     return fig
     
@@ -84,10 +93,12 @@ def distribution_var_categ(df, col, invert=False):
     fig, axes = plt.subplots(nrows=3, ncols=3, figsize=(18, 15))
     axes = axes.flat
     if invert:
-        object_cols = df.select_dtypes(include=['float64']).columns
+        cols = df.select_dtypes(include=['float64']).columns
     else:
-        object_cols = df.select_dtypes(include=['object']).columns
-    
+        cols = df.select_dtypes(include=['object']).columns
+
+    object_cols = [col for col in cols if not re.search('date$', col)]
+
     for i, colum in enumerate(object_cols):
         if invert:
             axe_x = col
@@ -103,9 +114,9 @@ def distribution_var_categ(df, col, invert=False):
             color = "orange",
             ax    = axes[i]
         )
-        axes[i].set_title(f"{col} vs {colum}", fontsize = 15, fontweight = "bold")
+        axes[i].set_title(f"{col} vs {colum}", fontsize = TITLE_SIZE, fontweight = "bold")
         axes[i].yaxis.set_major_formatter(ticker.EngFormatter())
-        axes[i].tick_params(labelsize = 15)
+        axes[i].tick_params(labelsize = TITLE_SIZE)
         axes[i].set_xlabel("")
         axes[i].set_ylabel("")
 
@@ -115,7 +126,7 @@ def distribution_var_categ(df, col, invert=False):
 
     fig.tight_layout()
     plt.subplots_adjust(top=0.9)
-    fig.suptitle(f'Distribución de {col} por variable categórica', fontsize = 20, fontweight = "bold")
+    fig.suptitle(f'Distribución de {col} por variable categórica', fontsize = 30, fontweight = "bold")
     
     return fig
 
@@ -124,8 +135,8 @@ def distribution_var_categ(df, col, invert=False):
 def bars_chart(df, x_in, y_in, detail, title, title_x, title_y):
     
     x = alt.X(x_in, title = title_x, stack='zero', 
-          axis = alt.Axis(format = ",.2s", grid=True, titleAnchor='middle', labelFontSize=12))
-    y = alt.Y(y_in, title=title_y, axis = alt.Axis(labelAngle=0, labelFontSize=10))
+          axis = alt.Axis(format = ",.2s", grid=True, titleAnchor='middle', labelFontSize=LABEL_SIZE))
+    y = alt.Y(y_in, title=title_y, axis = alt.Axis(labelAngle=0, labelFontSize=LABEL_SIZE))
     
     tooltip=[alt.Tooltip(detail, title='Grado de obesidad'),
              alt.Tooltip(y_in, title='Rango de edad'),
@@ -137,9 +148,13 @@ def bars_chart(df, x_in, y_in, detail, title, title_x, title_y):
         tooltip=tooltip,
         color=alt.Color(detail) 
     ).properties(
-        title=title,
-        width=550, 
-        height=300
+        width=700, 
+        height=300,
+        title={
+                "text": title,
+                #"color": "orange",  # Cambiar color del título
+                "fontSize": TITLE_SIZE    # Cambiar tamaño de la fuente del título
+            }
     )
 
     text = alt.Chart(df).mark_text(dx=-12, dy=3, color='white').encode(
@@ -169,11 +184,15 @@ def pie_chart(df, theta_in, category, title):
     base = alt.Chart(df).encode(
         theta=theta, 
         color=alt.Color(category, scale=alt.Scale(scheme='Oranges'))
-    ).properties(title=title)
+    ).properties(title={
+                "text": title,
+                #"color": "orange",  # Cambiar color del título
+                "fontSize": TITLE_SIZE    # Cambiar tamaño de la fuente del título
+            })
 
     pie = base.mark_arc(outerRadius=130, innerRadius=20)
 
-    text = base.mark_text(radius=110, size=20, fill='black').encode(
+    text = base.mark_text(radius=110, size=TITLE_SIZE, fill='black').encode(
            text=text
            )
     

@@ -8,12 +8,14 @@ import altair as alt
 
 import src.chart_common_functions as ccf
 
+from src.app_config import LABEL_SIZE, TITLE_SIZE
+
 def clusters_chart(df):
     x = 'count(*):Q'
     y = 'age_range:O'
     detail = 'cluster:N'
 
-    title='Cantidad de Individuos según su rango de edad y el cluster al que pertenecen'
+    title='Cantidad de Individuos por rango de edad y el Cluster asignado'
 
     title_x = 'Total individuos'
     title_y = 'Rangos de Edad'
@@ -38,12 +40,42 @@ def cluster_labels_chart(df):
         tooltip=tooltip,
         color=alt.Color('label:N') 
     ).properties(
-        title=title,
+        title={
+                "text": title,
+                #"color": "orange",  # Cambiar color del título
+                "fontSize": TITLE_SIZE    # Cambiar tamaño de la fuente del título
+            },
         width=700, 
         height=400
     )
 
     return bars
+
+def obesity_chart(df):
+
+    chart = alt.Chart(df, width=500, height=alt.Step(10)).mark_bar().encode(
+    y=alt.Y('label:N', axis=None),
+    x=alt.X('sum(total):Q', title='Total personas'),
+    color=alt.Color(
+        'label:N', title='Grupos de factores', legend=alt.Legend(orient="bottom", titleOrient="left")
+    ),
+    tooltip=[alt.Tooltip('label:N', title='Etiqueta'),
+             alt.Tooltip('sum(total):Q', title='Cantidad individuos'),
+             alt.Tooltip('obesity:N', title='Grado de Riesgo')],
+    row=alt.Column("obesity:N", title="Grado de Riesgo", 
+                header=alt.Header(labelAngle=0, 
+                                  labelFontSize=TITLE_SIZE,
+                                  titleFontSize=LABEL_SIZE)),
+    ).properties(
+        title={
+            "text": "Cantidad de Personas por Etiqueta y Grado de Riesgo de Obesidad",
+            #"color": "orange",  # Cambiar color del título
+            "fontSize": TITLE_SIZE    # Cambiar tamaño de la fuente del título
+        }
+    )
+
+    return chart
+
 
 def clusters_factors_charts(df, cluster):
     if cluster >= 0:
@@ -61,26 +93,31 @@ def clusters_factors_charts(df, cluster):
 
     fig.tight_layout()
     plt.subplots_adjust(top=0.9)
-    fig.suptitle(f"Candidad de individuos según factor", fontsize = 20, fontweight = "bold")
+    fig.suptitle(f"Candidad de individuos según factor", fontsize = TITLE_SIZE, fontweight = "bold")
 
     return fig
 
-def eda_cluster(df, cluster):   
-    
-    st.markdown(f'#### EDA cluster {cluster}')
-    
+def eda_cluster(df, cluster):      
     query = f'cluster=={cluster}'
     df_table = df.query(query)[['age_range',
                                 'obesity_bmi_txt', 'obesity_cc_txt',  
                                 'obesity_rcc_txt', 'obesity_ict_txt', 
                                 'risk_factors', 'obesity', 'cluster']]
-
+    
+    if df_table.obesity.isnull().any():
+        index_cols = ['age_range',
+                        'obesity_bmi_txt', 'obesity_cc_txt',  
+                        'obesity_rcc_txt', 'obesity_ict_txt', 
+                        'risk_factors']
+    else:
+        index_cols = ['age_range',
+                        'obesity_bmi_txt', 'obesity_cc_txt',  
+                        'obesity_rcc_txt', 'obesity_ict_txt', 
+                        'obesity', 'risk_factors']
+    
     df_eda_cluster = pd.pivot_table(df_table, 
-                                index=['age_range',
-                                       'obesity_bmi_txt', 'obesity_cc_txt',  
-                                       'obesity_rcc_txt', 'obesity_ict_txt', 
-                                       'risk_factors', 'obesity'],
-                                    aggfunc='count')
+                                index=index_cols,
+                                    aggfunc='count')   
        
     df_eda_cluster.reset_index(inplace=True)
     
@@ -90,18 +127,18 @@ def eda_cluster(df, cluster):
                                   'obesity_ict_txt': 'ict',
                                   'cluster': 'total'
                                  }, inplace=True)  
-    
        
     df_eda_cluster['label'] = df_eda_cluster.apply(lambda  row: define_label(row['bmi'], row['cc'],
                                                                       row['rcc'], row['ict']), axis=1)
-    
-    fig = clusters_factors_charts(df, cluster)
 
+    total = df_table.shape[0]
+    st.markdown(f'#### Estudio cluster **{cluster}** - {total} personas')
+
+    fig = clusters_factors_charts(df, cluster)
     st.pyplot(fig)
 
-    char = cluster_labels_chart(df_eda_cluster)
-
-    st.altair_chart(char)
+    labels_chart = cluster_labels_chart(df_eda_cluster)
+    st.altair_chart(labels_chart)
 
     return df_eda_cluster
     

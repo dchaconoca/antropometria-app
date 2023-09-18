@@ -1,12 +1,12 @@
 import streamlit as st
 from PIL import Image
 
-from src.call_api import obesity_prediction
-from src.app_config import page_config, sidebar_config, BMI_HELP, CC_HELP, RCC_HELP, ICT_HELP
+from src.call_api import obesity_prediction, save_obesity_info
+from src.app_config import page_config, sidebar_config, BMI_HELP, CC_HELP, RCC_HELP, ICT_HELP, OBESITY_HELP
 
 page_config()
 
-sidebar_config()
+#sidebar_config()
 
 st.subheader('¿Tienes algún riesgo de padecer sobrepeso y/o enfermedades no transmisibles?')
 
@@ -32,10 +32,7 @@ with col1:
             hip_circum = st.number_input('¿Y el contorno de tu cadera, en cm? Puedes guiarte por la imagen de la derecha', 
                                          min_value=0.1)
             
-            # st.button('¡Empecemos de nuevo!', key=None, help=None, on_click=st.experimental_rerun(), 
-            #           type="secondary", disabled=False, use_container_width=False)
-
-            submit = st.form_submit_button('¡Vamos!')
+            submit_prediction = st.form_submit_button('¡Vamos!')
 
 with col2:
       image= Image.open('streamlit/images/medidas.jpg')
@@ -43,7 +40,7 @@ with col2:
       st.image(image, caption='¿Cómo tomar las medidas?', 
             width=50, use_column_width="auto", output_format="auto")
       
-      if submit:
+      if submit_prediction:
 
             person = {
                   'age': age,
@@ -56,9 +53,10 @@ with col2:
 
             result = obesity_prediction(person)
 
-if submit:
+if submit_prediction:
             
             result = result[0]
+            st.session_state.result_global = result
 
             if result['obesity'] == 0:
                   st.subheader(':green[¡Excelente!] :smiley:')
@@ -75,7 +73,7 @@ if submit:
                   st.markdown('**Tienes sobrepeso/obesidad. Corres el riesgo de padecer alguna ENT.**')
                   st.markdown('**Lo mejor será consultar a tu médico.**')
       
-if submit:
+if submit_prediction:
       col1, col2, col3, col4 = st.columns((1,1,1,1))
       col1.markdown(':orange[**Índice de Masa Corporal**]', help=BMI_HELP)
       col2.markdown(':orange[**Cintura y grasa abdominal**]', help=CC_HELP)
@@ -92,4 +90,26 @@ if submit:
       col3.metric(label=' ', value=result['obesity_rcc_txt'], help=RCC_HELP, label_visibility='hidden')
       col4.metric(label=' ', value=result['obesity_ict_txt'], help=ICT_HELP, label_visibility='hidden')
 
-st.markdown(':orange[**Nota:** Esto es un ejercicio de ciencia de datos. Los resultados NO deben tomarse como la opinión de un especialista. Consulta a tu médico si tienes dudas.]')
+      st.markdown(':orange[**Nota:** Esto es un ejercicio de ciencia de datos. Los resultados NO deben tomarse como la opinión de un especialista. Consulta a tu médico si tienes dudas.]')
+
+with st.form('form_save_data'):
+
+      obesity_risk = (
+            '0 - Riesgo bajo o nulo',
+            '1 - Riesgo medio',
+            '2 - Riesgo alto'
+      )
+
+      real_obesity = st.selectbox('Escoge el grado de riesgo, según el paciente y sus posibles padecimientos:', 
+                        obesity_risk, help=OBESITY_HELP)
+      
+      comment = st.text_area('Escribe cualquier comentario que pueda ser útil (opcional):')
+      
+      submit_data = st.form_submit_button('¿Deseas guardar la información?')
+
+      if submit_data:
+            st.session_state.result_global.update({'real_obesity': int(real_obesity[:1])}) 
+            st.session_state.result_global.update({'comment': comment}) 
+            result_save = save_obesity_info(st.session_state.result_global)
+
+            if result_save: st.success('¡La información fue guardada exitosamente!')

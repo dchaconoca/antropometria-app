@@ -4,7 +4,7 @@ from src.app_config import page_config, sidebar_config
 
 page_config()
 
-sidebar_config()
+#sidebar_config()
 
 st.header('Estudio del sobrepeso y la obesidad y su incidencia en las ENT:')
 

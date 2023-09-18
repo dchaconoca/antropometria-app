@@ -17,7 +17,7 @@ def correlation(df):
 
     colormap = sns.color_palette('Oranges')
 
-    corr_df = df.corr(method='pearson', numeric_only=True)
+    corr_df = df.corr(method='pearson') #, numeric_only=True)
 
     fig, ax = plt.subplots(figsize=(12, 8))
     sns.heatmap(corr_df, annot=True, cmap=colormap)
@@ -30,7 +30,7 @@ def bmi_char(df, df_eda_f, df_eda_m):
     y = 'age_range:O'
     detail = 'obesity_bmi_txt:N'
 
-    title='Cantidad de Individuos según su rango de edad y grado de Obesidad según su BMI'
+    title='Cantidad de Individuos según su rango de edad y grado de Obesidad según su IMC'
     title_f='Sólo Mujeres'
     title_m='Sólo Hombres'
 

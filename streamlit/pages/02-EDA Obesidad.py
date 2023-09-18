@@ -14,7 +14,7 @@ from src.app_config import page_config, sidebar_config
 
 page_config()
 
-sidebar_config()
+#sidebar_config()
 
 st.subheader('Análisis de los Datos sobre Obesidad')
 
@@ -27,11 +27,7 @@ st.markdown('''
     Créditos: [Andy R. Terrel](https://data.world/andy)
 ''')
 
-
 result = obesity_return_data()
-
-# st.write(result)
-# df_obesity = pd.read_json(result, orient='records')
 
 if result:
 
@@ -47,15 +43,11 @@ if result:
     st.markdown('**Datos no numéricos**')
     st.write(df_obesity.select_dtypes(include=['object']).describe())
 
-    st.dataframe(df_obesity)
+    cols_to_exclude = ['cluster', 'obesity_date', 'cluster_kmodes_date']
 
-    #report = ProfileReport(df_obesity, explorative=True)
+    df_correl = df_obesity.drop(cols_to_exclude, axis=1)
 
-    st.markdown("#### Reporte Obesity")
-    # @st.cache_data
-    # st_profile_report(report)
-
-    st.pyplot(ef.correlation(df_obesity))
+    st.pyplot(ef.correlation(df_correl))
 
     option = st.selectbox('**¿Qué indicador deseas analizar?**',
     ('IMC', 'ICT', 'RCC', 'CC', 'Riesgos'))
@@ -97,6 +89,6 @@ with st.form('form_eda'):
 if submit:
     replace = (replace == 'Sí')
     if replace:
+        st.warning('¡CUIDADO! La base de datos se reiniciará y todos los datos serán eliminados. Tendrás que volver a calcular los grupos o clusters y etiquetar los datos antes de entrenar de nuevo el modelo.')
         result = obesity_data_etl(replace)
-        buffer = io.BytesIO(result)
-        df_obesity = pd.read_json(buffer, orient='records')
+        df_obesity = pd.read_json(result, orient='records')

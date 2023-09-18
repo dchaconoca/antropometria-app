@@ -8,36 +8,11 @@ from src.call_api import obesity_clusters_kmodes, obesity_return_data
 import src.clustering_functions as cf
 import src.chart_common_functions as ccf
 
-from src.app_config import page_config, sidebar_config
+from src.app_config import page_config, COEF_SIL_HELP, DB_HELP, CH_HELP
 
 page_config()
 
-sidebar_config()
-
-COEF_SIL_HELP = '''
-      Coeficiente de Silhouette: Varía entre -1 y 1.\n
-      \t-1 - Mal agrupamiento\n
-      \t0 - Indiferente\n
-      \t1 - Buen agrupamiento
-'''
-
-DB_HELP = '''
-    Valores pequeños para el índice David-Bouldin 
-    indican grupos compactos y cuyos centros 
-    están bien separados los unos de los otros.
-
-    El número de grupos o clusters que minimiza el índice DB
-    se toma como el óptimo.
-'''
-
-CH_HELP = '''
-    El índice de Calinski-Harabasz,
-    es una métrica con la que se puede evaluar 
-    el grado de agrupación de un conjunto de datos. 
-
-    Cuando mayor sea el valor del índice, 
-    mejor será la agrupación.
-'''
+#sidebar_config()
 
 st.subheader('Clasificación de los Datos')
 
@@ -46,13 +21,14 @@ st.markdown('''
             
     Se puede utilizar un algoritmo de **Clasificación no Supervisada** para poder identificar grupos de personas con características similares y facilitar el etiquetado de los datos, previo al entrenamiento del algoritmo de clasificación: 
     
-    1. Se ejecuta el algoritmo **KModes** con los parámetros indicados.
+    1. Ejecuta el algoritmo **KModes** con los parámetros indicados: 
             
-    2. Se muestran los datos de cada grupo (cluster) con sus características para su análisis.
+        - El número ideal de clusters o grupos está entre 5 y 6
+        - Un buen resultado se obtiene con los parámetros **5 clusters**, **n_init=4**, **ramdon_state=5**
             
-    3. Se asigna manualmente una etiqueta a cada grupo o subgrupo.
+    2. Se muestrarán los datos de cada grupo (cluster) con sus características para su análisis.
             
-    4. Se actualizan los datos etiquetados en la base de datos.
+    3. En la parte **Análisis de grupos** podrás analizar los datos cluster por cluster y podrás etiquetarlos.
 ''')
 
 
@@ -96,15 +72,11 @@ if submit:
 
     df_obesity = pd.read_json(result, orient='records')
 
-    df_num_cluster = pd.DataFrame(df_obesity.groupby('cluster')['age'].count())
-    df_num_cluster.rename(columns={'age': 'num_people'}, inplace=True) 
-    df_num_cluster.reset_index(inplace=True)
-
-    theta = 'num_people:Q'
+    theta = 'count(age):Q'
     category = 'cluster:N'
     title = 'Cantidad de personas por cluster o grupo'
 
-    st.altair_chart(ccf.pie_chart(df_num_cluster, theta, category, title))
+    st.altair_chart(ccf.pie_chart(df_obesity, theta, category, title))
 
     st.pyplot(cf.clusters_factors_charts(df_obesity, -1))
     st.altair_chart(cf.clusters_chart(df_obesity), theme=None)
