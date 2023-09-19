@@ -21,7 +21,7 @@ def sidebar_config():
 
 
 LABEL_SIZE=12
-TITLE_SIZE=18
+TITLE_SIZE=16
 
 BMI_HELP = '''
       Índice de Masa Corporal.\n
@@ -61,7 +61,20 @@ OBESITY_HELP = '''
           que señalan que podría comenzar a padecerlas: Puede estar desarrollando 
           resistencia a la insulina o tener episodios de hipertensión, por ejemplo.\n
     \t2 - Riesgo alto: La persona padece alguna ENT, diagnosticada o no.
+'''
 
+COMMENTS_HELP = '''
+    Cualquier información relevante sobre el estado del paciente:\n
+    Si padece de patologías como hipertensión, diabetes, enfermedades cardiovasculares, etc.\n
+    Información relevante que podría estar relacionada con el peso y la acumulación de grasa.
+'''
+
+N_INIT_HELP = '''
+    **n_init** es el número de veces que se ejecutará el algoritmo con diferentes semillas aleatorias. El valor predeterminado es 10. Un valor mayor de n_init puede ayudar a encontrar una solución más óptima, pero también puede aumentar el tiempo de ejecución.
+'''
+
+RDM_STE_HELP = '''
+    **random_state** es una semilla aleatoria que se utiliza para inicializar el generador de números aleatorios. Un valor constante de random_state garantizará que el algoritmo produzca los mismos resultados cada vez que se ejecute.
 '''
 
 COLS_CLUSTER_LABEL = {

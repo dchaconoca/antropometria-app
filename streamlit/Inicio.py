@@ -2,7 +2,7 @@ import streamlit as st
 from PIL import Image
 
 from src.call_api import obesity_prediction, save_obesity_info
-from src.app_config import page_config, sidebar_config, BMI_HELP, CC_HELP, RCC_HELP, ICT_HELP, OBESITY_HELP
+from src.app_config import page_config, sidebar_config, BMI_HELP, CC_HELP, RCC_HELP, ICT_HELP, OBESITY_HELP, COMMENTS_HELP
 
 page_config()
 
@@ -94,22 +94,27 @@ if submit_prediction:
 
 with st.form('form_save_data'):
 
+      st.markdown('###### Si eres personal médico y deseas llevar un registro de los datos, agrega la información siguiente y guarda los datos:')
+
       obesity_risk = (
             '0 - Riesgo bajo o nulo',
             '1 - Riesgo medio',
             '2 - Riesgo alto'
       )
 
-      real_obesity = st.selectbox('Escoge el grado de riesgo, según el paciente y sus posibles padecimientos:', 
+      real_obesity = st.selectbox('Escoge el grado de riesgo **real**, según el paciente y sus posibles padecimientos:', 
                         obesity_risk, help=OBESITY_HELP)
       
-      comment = st.text_area('Escribe cualquier comentario que pueda ser útil (opcional):')
-      
-      submit_data = st.form_submit_button('¿Deseas guardar la información?')
+      comment = st.text_area('Escribe cualquier comentario que pueda ser útil (opcional):', help=COMMENTS_HELP)
+
+      to_save = st.radio('¿Deseas guardar la información?', ('Sí', 'No'), horizontal=True)
+      submit_data = st.form_submit_button('Guardar')        
 
       if submit_data:
-            st.session_state.result_global.update({'real_obesity': int(real_obesity[:1])}) 
-            st.session_state.result_global.update({'comment': comment}) 
-            result_save = save_obesity_info(st.session_state.result_global)
 
-            if result_save: st.success('¡La información fue guardada exitosamente!')
+            if to_save=='Sí': 
+                  st.session_state.result_global.update({'real_obesity': int(real_obesity[:1])}) 
+                  st.session_state.result_global.update({'comment': comment}) 
+                  result_save = save_obesity_info(st.session_state.result_global)
+
+                  if result_save: st.success('¡La información fue guardada exitosamente!')

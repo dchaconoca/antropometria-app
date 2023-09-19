@@ -72,7 +72,9 @@ st.markdown(
     |Sobrepeso| 0.48 - 0.57 | 0.52 - 0.62|
     |Obesidad| > 0.57| > 0.62|  
 
-    Esta aplicación, además de calcular estos índices, utiliza **Inteligencia Artificial** para poder determinar el riesgo que tiene una persona de sufrir sobrepeso u obesidad, y por ende, de padecer **Enfermedades No Transmisibles** (ENT).
+    Esta aplicación, además de calcular estos índices, utiliza **Aprendizaje Automático** (parte de la inteligencia artificial) para poder determinar el riesgo que tiene una persona de sufrir sobrepeso u obesidad, y por ende, de padecer **Enfermedades No Transmisibles** (ENT).
+
+    La predicción del riesgo se realiza gracias a la comparación de la información con la de individuos con características similares.
 
     **Nota:** Esta aplicación es un ejercicio de ciencia de datos. Si bien toma en cuenta las consideraciones médicas y científicas aquí expuestas, el estudio no ha sido verificado y avalado por ningún profesional de la salud. Cualquier duda que tengas, lo mejor es consultar a tu médico. 
    

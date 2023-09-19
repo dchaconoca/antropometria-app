@@ -82,7 +82,7 @@ def num_var_correl(df, col):
 
     fig.tight_layout()
     plt.subplots_adjust(top=0.9)
-    fig.suptitle(f"Correlación con {col}", fontsize = TITLE_SIZE, fontweight = "bold")
+    fig.suptitle(f"Correlación de las variables numéricas con {col}", fontsize = TITLE_SIZE, fontweight = "bold")
 
     return fig
     
@@ -178,12 +178,12 @@ def bars_chart(df, x_in, y_in, detail, title, title_x, title_y):
 #     titulo: Título del gráfico
 def pie_chart(df, theta_in, category, title):
 
-    theta = alt.Theta(theta_in, stack=True)
+    theta = alt.Theta(theta_in, stack=True, title='Total de personas')
     text = alt.Text(theta_in) 
 
     base = alt.Chart(df).encode(
         theta=theta, 
-        color=alt.Color(category, scale=alt.Scale(scheme='Oranges'))
+        color=alt.Color(category, scale=alt.Scale(scheme='Oranges'), title='Grado de Riesgo')
     ).properties(title={
                 "text": title,
                 #"color": "orange",  # Cambiar color del título

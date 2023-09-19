@@ -21,7 +21,7 @@ st.subheader('Análisis de los Datos sobre Obesidad')
 st.markdown('''
     Aquí podrás explorar y analizar los datos sobre Obesidad.
             
-    También podrás inicializar la base de datos cargando y transformando los datos originales del archivo:
+    También podrás re-inicializar la base de datos cargando y transformando los datos originales del archivo:
     [**Civilian American and European Surface Anthropometry Resource, or CAESAR**](https://data.world/andy/caesar/workspace/file?filename=caesar.csv).
     
     Créditos: [Andy R. Terrel](https://data.world/andy)
@@ -36,7 +36,7 @@ if result:
     df_eda_f = ef.divide_by_gender(df_obesity, 'female')
     df_eda_m = ef.divide_by_gender(df_obesity, 'male')
 
-    st.markdown('#### Descripción del DataFrame:')
+    st.markdown('#### Resumen estadístico de los datos:')
 
     st.markdown('**Datos numéricos**')
     st.write(df_obesity.describe())
@@ -49,7 +49,9 @@ if result:
 
     st.pyplot(ef.correlation(df_correl))
 
-    option = st.selectbox('**¿Qué indicador deseas analizar?**',
+    st.markdown('##### ¿Qué indicador deseas analizar?')
+
+    option = st.selectbox('',
     ('IMC', 'ICT', 'RCC', 'CC', 'Riesgos'))
 
     if option == 'IMC':

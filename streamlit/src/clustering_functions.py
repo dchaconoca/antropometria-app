@@ -31,14 +31,16 @@ def cluster_labels_chart(df):
     
     title = 'Cantidad de individuos por etiqueta'
     
-    tooltip=[alt.Tooltip('label:N'),
+    tooltip=[alt.Tooltip('label:N', title='Etiqueta o grupo'),
              alt.Tooltip('sum(total):Q', title='Cantidad individuos')]
     
     bars = alt.Chart(df).mark_bar().encode(
-        x='sum(total):Q',
-        y='label:N',
+        x=alt.X('sum(total):Q', title='Total personas'),
+        y=alt.Y('label:N', title='Etiqueta o grupo'),
         tooltip=tooltip,
-        color=alt.Color('label:N') 
+        color=alt.Color(
+        'label:N', title='Etiqueta o grupo', legend=alt.Legend(orient="bottom", titleOrient="left")
+        )
     ).properties(
         title={
                 "text": title,
@@ -57,7 +59,7 @@ def obesity_chart(df):
     y=alt.Y('label:N', axis=None),
     x=alt.X('sum(total):Q', title='Total personas'),
     color=alt.Color(
-        'label:N', title='Grupos de factores', legend=alt.Legend(orient="bottom", titleOrient="left")
+        'label:N', title='Etiqueta o grupo', legend=alt.Legend(orient="bottom", titleOrient="left")
     ),
     tooltip=[alt.Tooltip('label:N', title='Etiqueta'),
              alt.Tooltip('sum(total):Q', title='Cantidad individuos'),
