@@ -1,9 +1,9 @@
-# # dIAna: Uso de medidas antropométricas y algoritmos de ML para determinar el riesgo de obesidad 
+# dIAna: Uso de medidas antropométricas y algoritmos de ML para determinar el riesgo de obesidad 
 
 >Autora: Diana Chacón Ocariz
 
 
-##  Estudio del sobrepeso y la obesidad y su incidencia en las ENT:
+## Estudio del sobrepeso y la obesidad y su incidencia en las ENT:
 
 La obesidad y el sobrepeso son condiciones de salud que han alcanzado proporciones epidémicas a nivel mundial, siendo un factor determinante en el desarrollo de diversas enfermedades no transmisibles (ENT). Estas condiciones se caracterizan por un exceso de grasa corporal, lo que puede tener consecuencias significativas para la salud a largo plazo.
 
@@ -48,6 +48,6 @@ A partir de los datos que el usuario introduce, la aplicación (hecha utilizando
 
 2. **Ejecutar la aplicación Streamlit:** Ejecutar el comando `streamlit run streamlit/Inicio.py`. Esto ejecutará la App en local en el puerto 8501
 
-3. Verificar en el archivo `streamlit/Inicio.py` que se está apuntando a la API en local.
+3. Verificar en el archivo `streamlit/src/call_api.py` que se está apuntando a la API en local.
 
     
