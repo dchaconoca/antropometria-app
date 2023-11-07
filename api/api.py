@@ -28,12 +28,6 @@ async def return_obesity_data():
     validated_items = [ob.ObesityTable(**item) for item in items]
     return validated_items
 
-# Save all data for obesity
-# @app.post('/obesity_data')
-# async def save_obesity_data(data):
-#     result = ob.return_data_obesity()
-#     result = result.to_dict(orient = 'records')
-#     return result
 
 # Update obesity variable in obesity table
 @app.patch('/obesity_data')
