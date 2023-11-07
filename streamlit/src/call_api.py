@@ -4,9 +4,11 @@ import io
 
 import streamlit as st
 
-URL_BASE = 'https://antropo-api-ft3evlkfyq-rj.a.run.app'
+#URL_BASE = 'https://antropo-api-ft3evlkfyq-rj.a.run.app'
 
 #URL_BASE = 'http://127.0.0.1:8000'
+
+URL_BASE = 'http://localhost'
 
 def obesity_prediction(person):
       

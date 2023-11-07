@@ -1,0 +1,12 @@
+services:
+  api:
+    build: .
+    ports:
+      - "80:80"
+    volumes:
+      - ./api/data/db:/code/data/db
+
+  database:
+    image: keinos/sqlite3
+    volumes:
+      - ./api/data/db:/code/data/db

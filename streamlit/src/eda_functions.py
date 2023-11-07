@@ -17,7 +17,7 @@ def correlation(df):
 
     colormap = sns.color_palette('Oranges')
 
-    corr_df = df.corr(method='pearson') #, numeric_only=True)
+    corr_df = df.corr(method='pearson', numeric_only=True)
 
     fig, ax = plt.subplots(figsize=(12, 8))
     sns.heatmap(corr_df, annot=True, cmap=colormap)

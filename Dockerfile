@@ -1,5 +1,7 @@
 FROM python:3.9
 
+RUN apt-get update && apt-get install -y sqlite3
+
 WORKDIR /code
 
 COPY ./api/requirements.txt /code/requirements.txt
