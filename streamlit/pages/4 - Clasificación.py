@@ -75,8 +75,9 @@ if submit:
     theta = 'count(age):Q'
     category = 'cluster:N'
     title = 'Cantidad de personas por cluster o grupo'
+    cat_title = 'Cluster'
 
-    st.altair_chart(ccf.pie_chart(df_obesity, theta, category, title))
+    st.altair_chart(ccf.pie_chart(df_obesity, theta, category, title, cat_title))
 
     st.pyplot(cf.clusters_factors_charts(df_obesity, -1))
     st.altair_chart(cf.clusters_chart(df_obesity), theme=None)

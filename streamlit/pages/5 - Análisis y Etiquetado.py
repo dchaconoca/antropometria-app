@@ -64,8 +64,9 @@ if nb_clusters:
         theta = 'sum(total):Q'
         category = 'obesity:N'
         title = 'Cantidad de Personas por Grado de Riesgo'
+        cat_title = 'Grado de Riesgo'
 
-        st.altair_chart(ccf.pie_chart(df_labeled, theta, category, title))
+        st.altair_chart(ccf.pie_chart(df_labeled, theta, category, title, cat_title))
         
         obes_chart = cf.obesity_chart(df_labeled)
         st.altair_chart(obes_chart)

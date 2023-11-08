@@ -176,14 +176,14 @@ def bars_chart(df, x_in, y_in, detail, title, title_x, title_y):
 #     theta: Datos que se van a graficar
 #     texto: Texto que se mostrará en el cada sector del gráfico
 #     titulo: Título del gráfico
-def pie_chart(df, theta_in, category, title):
+def pie_chart(df, theta_in, category, title, cat_title):
 
     theta = alt.Theta(theta_in, stack=True, title='Total de personas')
     text = alt.Text(theta_in) 
 
     base = alt.Chart(df).encode(
         theta=theta, 
-        color=alt.Color(category, scale=alt.Scale(scheme='Oranges'), title='Grado de Riesgo')
+        color=alt.Color(category, scale=alt.Scale(scheme='Oranges'), title=cat_title)
     ).properties(title={
                 "text": title,
                 #"color": "orange",  # Cambiar color del título
