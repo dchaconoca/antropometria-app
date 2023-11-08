@@ -16,7 +16,7 @@ def obesity_prediction(person):
       person = json.dumps(person) 
 
       try:
-            response = requests.get(url,
+            response = requests.post(url,
                               headers={'Content-Type': 'application/json'},
                               data=person,
                               timeout=8000)
@@ -44,7 +44,7 @@ def save_obesity_info(info):
       info = json.dumps(info) 
 
       try:
-            response = requests.post(url,
+            response = requests.patch(url,
                               headers={'Content-Type': 'application/json'},
                               data=info,
                               timeout=8000)

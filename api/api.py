@@ -9,13 +9,13 @@ def read_root():
     return {'message': 'API Medidas Antropométricas'}
 
 # Return obesity prediction for a person
-@app.get('/obesity_prediction')
+@app.post('/obesity_prediction')
 async def obesity_prediction(person: ob.PersonObesity):
     result = ob.make_obesity_prediction(person)
     return result
 
 # Save obesity prediction and real information
-@app.post('/obesity_prediction')
+@app.patch('/obesity_prediction')
 async def save_obesity_information(info: ob.PredictedObesityTable):
     result = ob.save_obesity_predicted(info)
     return result
