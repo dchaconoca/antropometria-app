@@ -1,3 +1,24 @@
+#############################################
+# Archivo compose.yaml
+#############################################
+# 1. Define los servicios o las diferentes imágenes que se tomarán en cuenta 
+#    para construir el contenedor
+# 2. build indica que se van a construir las imágenes indicadas en el Dockerfile
+# 3. Se indica el puerto en donde se va a ejecutar el contenedor. 
+#    ATENCIÓN: Ese mismo puerto es el que debe ponerse en Google Cloud
+# 4. Volumes indican el lugar de donde se tomará la base de datos y el lugar donde se
+#    encontrará en el contenedor
+# 5. La image de de database es la imagen que contiene sqlite3. En este caso, es una imagen
+#    pública que se encuentra en el registro público de contenedores Docker. Se puede usar el
+#    comando docker search sqlite3 para buscar una imagen pública de sqlite3
+# 6. Se usa docker pull keinos/sqlite3 para descargar en local una imagen pública de sqlite3
+# 7. docker-compose lo que hace es crear un contenedor a partir de todas las imágenes especificadas
+#    en el archivo compose.yaml. No sé muy bien cómo hace luego Google Cloud para construir el
+#    contenedor, pero lo hace
+# 8. La importancia de mantener la base de datos en un volumen aparte, es que puede compartirse
+#    entre varios contenedores y además, puede modificarse o incluso borrarse
+#    la imagen de la api, sin que eso afecte la base de datos
+
 services:
   api:
     build: .
