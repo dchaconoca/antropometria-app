@@ -52,3 +52,11 @@ async def clusters_kmodes(params: ob.ParamsKModes):
 async def return_nb_clusters():
     result = ob.return_number_clusters()
     return result
+
+# Return number of clusters
+@app.get('/all_new_data')
+async def return_all_new_data():
+    result = ob.return_all_new_data()
+    items = result.to_dict(orient = 'records')
+    validated_items = [ob.PredictedObesityTable(**item) for item in items]
+    return validated_items

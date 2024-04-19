@@ -204,3 +204,28 @@ def obesity_return_nb_clusters():
             st.error("Error inesperado: " + str(e))
             st.stop()
 
+def obesity_return_new_data():
+      
+      url = URL_BASE + f'/all_new_data'
+
+      try:
+            response = requests.get(url,
+                              headers={'Content-Type': 'application/json'},
+                              timeout=8000)
+            result = io.BytesIO(response.content)
+            return result
+      
+      except requests.exceptions.RequestException as e:
+            # Manejar errores de solicitud (por ejemplo, problemas de red)
+            st.error("Error de solicitud a la API: " + str(e))
+            st.stop()
+
+      except requests.exceptions.HTTPError as e:
+            # Manejar errores de respuesta HTTP (por ejemplo, códigos de estado no exitosos)
+            st.error("Error HTTP de la API: " + str(e))
+            st.stop()
+
+      except Exception as e:
+            # Manejar cualquier otro error inesperado
+            st.error("Error inesperado: " + str(e))
+            st.stop()

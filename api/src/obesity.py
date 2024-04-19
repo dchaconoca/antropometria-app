@@ -215,4 +215,9 @@ def save_obesity_predicted(info: PredictedObesityTable):
     validated_items = [PredictedObesityTable(**item) for item in items]
     return validated_items
     
-
+def return_all_new_data():
+    conn = open_connection()
+    query = f'SELECT * FROM PredictedObesity'
+    result = pd.read_sql_query(query, conn)
+    close_connection(conn)
+    return result
