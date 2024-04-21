@@ -95,7 +95,30 @@ def clusters_factors_charts(df, cluster):
 
     fig.tight_layout()
     plt.subplots_adjust(top=0.9)
-    fig.suptitle(f"Candidad de individuos según factor", fontsize = TITLE_SIZE, fontweight = "bold")
+    fig.suptitle(f"Cantidad de individuos según factor", fontsize = TITLE_SIZE, fontweight = "bold")
+
+    return fig
+
+def obesity_factors_relation_charts(df, cluster):
+    if cluster >= 0:
+        query = f'cluster=={cluster}'
+        df = df.query(query)[['cluster', 'age_range', 'risk_factors', 
+                              'bmi', 'waist_circum_preferred', 'ict', 'rcc', 'obesity']]
+    else:
+        df = df[['cluster', 'age_range', 'risk_factors', 
+                 'bmi', 'waist_circum_preferred', 'ict', 'rcc', 'obesity']]
+
+    fig, (ax1, ax2, ax3, ax4) = plt.subplots(nrows=1, ncols=4, figsize=(18, 6))
+    
+
+    sns.scatterplot(y='obesity', x='bmi', data=df, ax=ax1)
+    sns.scatterplot(y='obesity', x='waist_circum_preferred', data=df, ax=ax2)
+    sns.scatterplot(y='obesity', x='ict', data=df, ax=ax3)
+    sns.scatterplot(y='obesity', x='rcc', data=df, ax=ax4)
+
+    fig.tight_layout()
+    plt.subplots_adjust(top=0.9)
+    fig.suptitle(f"Cantidad de individuos según factor", fontsize = TITLE_SIZE, fontweight = "bold")
 
     return fig
 
@@ -136,8 +159,11 @@ def eda_cluster(df, cluster):
     total = df_table.shape[0]
     st.markdown(f'#### Estudio cluster **{cluster}** - {total} personas')
 
-    fig = clusters_factors_charts(df, cluster)
-    st.pyplot(fig)
+    fig1 = clusters_factors_charts(df, cluster)
+    st.pyplot(fig1)
+
+    # fig2 = obesity_factors_relation_charts(df, cluster)
+    # st.pyplot(fig2)
 
     labels_chart = cluster_labels_chart(df_eda_cluster)
     st.altair_chart(labels_chart)

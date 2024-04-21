@@ -28,7 +28,6 @@ async def return_obesity_data():
     validated_items = [ob.ObesityTable(**item) for item in items]
     return validated_items
 
-
 # Update obesity variable in obesity table
 @app.patch('/obesity_data')
 async def update_obesity(params: ob.ParamsObesity):
@@ -53,10 +52,15 @@ async def return_nb_clusters():
     result = ob.return_number_clusters()
     return result
 
-# Return number of clusters
-@app.get('/all_new_data')
+# Return all new real data
+@app.get('/new_data')
 async def return_all_new_data():
     result = ob.return_all_new_data()
     items = result.to_dict(orient = 'records')
     validated_items = [ob.PredictedObesityTable(**item) for item in items]
     return validated_items
+
+# Update obesity variable in obesity table
+@app.delete('/new_data')
+async def delete_new_data(params: ob.PersonPredictedObesity):
+    result = ob.delete_new_data(params)

@@ -48,6 +48,10 @@ class PredictedObesityTable(BaseModel):
     comment: Optional[str] = None
     creation_date: Optional[datetime.datetime] = None
 
+class PersonPredictedObesity(PersonObesity):
+    creation_date: Optional[datetime.datetime] = None
+
+
 class ObesityTable(BaseModel):
     age: float
     age_range: constr(regex='^(17-25|26-35|36-45|46-55|56-65|66-100)$')
@@ -95,7 +99,8 @@ def save_data_obesity(df, table, repĺace=True):
     df.to_sql(table, conn, if_exists=action, index=False)
     close_connection(conn)
 
-def update_data_obesity(query):
+def execute_query(query):
+    print(query)
     conn = open_connection()
     exec_query(query, conn)
     close_connection(conn)
@@ -200,7 +205,7 @@ def update_obesity(params: ParamsObesity):
 
     query = query + query_where
 
-    return update_data_obesity(query)
+    return execute_query(query)
 
 def save_obesity_predicted(info: PredictedObesityTable):
 
@@ -221,3 +226,21 @@ def return_all_new_data():
     result = pd.read_sql_query(query, conn)
     close_connection(conn)
     return result
+
+def delete_new_data(params: PersonPredictedObesity):
+    params = params.dict()
+
+    query = f"DELETE FROM PredictedObesity "
+
+    query_where = f"WHERE age={params['age']} AND "
+    query_where = query_where + f"gender='{params['gender']}' AND "
+    query_where = query_where + f"height={params['height']} AND "
+    query_where = query_where + f"weight={params['weight']} AND "
+    query_where = query_where + f"waist_circum_preferred={params['waist_circum_preferred']} AND "
+    query_where = query_where + f"hip_circum={params['hip_circum']} AND "
+    query_where = query_where + f"creation_date='{params['creation_date']}'"
+
+    query = query + query_where
+
+    return execute_query(query)
+

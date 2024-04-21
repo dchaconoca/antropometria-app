@@ -78,27 +78,33 @@ RDM_STE_HELP = '''
 '''
 
 COLS_CLUSTER_LABEL = {
-  "age_range": 'Rango de Edad',
-  "bmi": 'IMC',
-  "cc": 'Cintura',
-  "rcc": 'RCC',
-  "ict": 'ICT',
-  "risk_factors": 'N° factores de riesgo',
-#   "obesity": st.column_config.NumberColumn(
-#             "Grado de Obesidad",
-#             help=OBESITY_HELP,
-#             min_value=0,
-#             max_value=2,
-#             step=1
-#         ),
-  "obesity": st.column_config.SelectboxColumn(
-            "Grado de Obesidad",
-            help=OBESITY_HELP,
-            options=[None, 0, 1, 2],
-            default=None,
-        ),
-  "total": 'Cantidad de personas',
-  "label": None,
+    "age": 'Edad',
+    "age_range": 'Rango de Edad',
+    "gender": 'Género',
+    "height": 'Altura cm',
+    "weight": 'Peso Kg',
+    "waist_circum_preferred": 'Contorno Cintura',
+    "hip_circum": 'Contorno Cadera',
+    "bmi": 'IMC',
+    "cc": 'Cintura',
+    "rcc": 'RCC',
+    "ict": 'ICT',
+    "obesity_bmi_txt": 'IMC',
+    "obesity_cc_txt": 'Indice Cintura',
+    "obesity_rcc_txt": 'RCC',
+    "obesity_ict_txt": 'ICT',
+    "real_obesity": 'Grado de Obesidad Real',
+    "risk_factors": 'N° factores de riesgo',
+    "comment": 'Comentario',
+    "creation_date": 'Fecha Creación',
+    "obesity": st.column_config.SelectboxColumn(
+                "Grado de Obesidad",
+                help=OBESITY_HELP,
+                options=[None, 0, 1, 2],
+                default=None,
+            ),
+    "total": 'Cantidad de personas',
+    "label": None,
 }
 
 

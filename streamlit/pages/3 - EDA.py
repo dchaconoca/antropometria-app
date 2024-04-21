@@ -43,7 +43,9 @@ if result:
     st.markdown('**Datos no numéricos**')
     st.write(df_obesity.select_dtypes(include=['object']).describe())
 
-    cols_to_exclude = ['cluster', 'obesity_date', 'cluster_kmodes_date']
+    cols_to_exclude = df_obesity.select_dtypes(include=['object']).columns.to_list()
+    
+    cols_to_exclude.extend(['cluster', 'gender_bin'])
 
     df_correl = df_obesity.drop(cols_to_exclude, axis=1)
 
