@@ -100,25 +100,53 @@ def clusters_factors_charts(df, cluster):
     return fig
 
 def obesity_factors_relation_charts(df, cluster):
+    cols=['cluster', 'age_range', 'obesity_bmi_txt', 'obesity_cc_txt',  
+        'obesity_rcc_txt', 'obesity_ict_txt', 'risk_factors', 'obesity']
+    
     if cluster >= 0:
         query = f'cluster=={cluster}'
-        df = df.query(query)[['cluster', 'age_range', 'risk_factors', 
-                              'bmi', 'waist_circum_preferred', 'ict', 'rcc', 'obesity']]
+        df = df.query(query)[cols]
     else:
-        df = df[['cluster', 'age_range', 'risk_factors', 
-                 'bmi', 'waist_circum_preferred', 'ict', 'rcc', 'obesity']]
+        df = df.loc[:,cols]
+        
+    fig, axes = plt.subplots(nrows=4, ncols=2, figsize=(10, 12))
+    axes = axes.flat
 
-    fig, (ax1, ax2, ax3, ax4) = plt.subplots(nrows=1, ncols=4, figsize=(18, 6))
+    i=0
+    for col in cols:
+        if col != 'cluster':
+            # df_table = pd.pivot_table(df, index=col,
+            #                         values='cluster', aggfunc='count')  
+            # df_table.rename(columns={'cluster': 'total'}, inplace=True)  
+
+            # df_table['cluster']=cluster
+                     
+            # st.write(df_table)
+
+            # sns.scatterplot(x='cluster', y=col, size='total', sizes=(10, 200), data=df_table, ax=axes[i])
+            # i=i+1
+            sns.violinplot(x='cluster', y=col, data=df, ax=axes[i])
+            i=i+1
+
+
     
 
-    sns.scatterplot(y='obesity', x='bmi', data=df, ax=ax1)
-    sns.scatterplot(y='obesity', x='waist_circum_preferred', data=df, ax=ax2)
-    sns.scatterplot(y='obesity', x='ict', data=df, ax=ax3)
-    sns.scatterplot(y='obesity', x='rcc', data=df, ax=ax4)
+       
+    # sns.scatterplot(x='cluster', y='obesity', hue='bmi', palette="deep", data=df, ax=axes[0], size='bmi', sizes=(20, 200), legend="full")
+    # sns.scatterplot(x='cluster', y='obesity', hue='waist_circum_preferred', data=df, ax=axes[1])
+    # sns.scatterplot(x='cluster', y='obesity', hue='ict', data=df, ax=axes[2])
+    # sns.scatterplot(x='cluster', y='obesity', hue='rcc', data=df, ax=axes[3])
+
+    # sns.scatterplot(y='obesity', x='bmi', data=df, ax=axes[4])
+    # sns.scatterplot(y='obesity', x='waist_circum_preferred', data=df, ax=axes[5])
+    # sns.scatterplot(y='obesity', x='ict', data=df, ax=axes[6])
+    # sns.scatterplot(y='obesity', x='rcc', data=df, ax=axes[7])
 
     fig.tight_layout()
     plt.subplots_adjust(top=0.9)
     fig.suptitle(f"Cantidad de individuos según factor", fontsize = TITLE_SIZE, fontweight = "bold")
+
+    # sns.color_palette('Oranges')
 
     return fig
 

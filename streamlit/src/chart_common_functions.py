@@ -64,15 +64,15 @@ def num_var_correl(df, col):
 
     for i, colum in enumerate(col_num):
         sns.regplot(
-            x           = df[col],
-            y           = df[colum],
+            y           = df[col],
+            x           = df[colum],
             color       = "orange",
             marker      = '.',
             scatter_kws = {"alpha":0.4},
             line_kws    = {"color":"r","alpha":0.7},
             ax          = axes[i]
         )
-        axes[i].set_title(f"{col} vs {colum}", fontsize = LABEL_SIZE, fontweight = "bold")
+        axes[i].set_title(f"{colum} vs {col}", fontsize = LABEL_SIZE, fontweight = "bold")
         axes[i].ticklabel_format(style='sci', scilimits=(-4,4), axis='both')
         axes[i].yaxis.set_major_formatter(ticker.EngFormatter())
         axes[i].xaxis.set_major_formatter(ticker.EngFormatter())
@@ -80,8 +80,8 @@ def num_var_correl(df, col):
         axes[i].set_xlabel("")
         axes[i].set_ylabel("")
 
-    fig.tight_layout()
-    plt.subplots_adjust(top=0.9)
+    #fig.tight_layout()
+    #plt.subplots_adjust(top=0.5)
     fig.suptitle(f"Correlación de las variables numéricas con {col}", fontsize = TITLE_SIZE, fontweight = "bold")
 
     return fig
