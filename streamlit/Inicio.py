@@ -20,6 +20,8 @@ st.markdown(
 
 col1, col2 = st.columns((1, 1))
 
+predicted = False
+
 with col1:
 
       with st.form('form_obesity_risk'):
@@ -32,7 +34,7 @@ with col1:
             hip_circum = st.number_input('¿Y el contorno de tu cadera, en cm? Puedes guiarte por la imagen de la derecha', 
                                          min_value=0.1)
             
-            submit_prediction = st.form_submit_button('¡Vamos!')
+            predicted = submit_prediction = st.form_submit_button('¡Vamos!')
 
 with col2:
       image= Image.open('streamlit/images/medidas.jpg')
@@ -91,6 +93,7 @@ if submit_prediction:
       col4.metric(label=' ', value=result['obesity_ict_txt'], help=ICT_HELP, label_visibility='hidden')
 
       st.markdown(':orange[**Nota:** Esto es un ejercicio de ciencia de datos. Los resultados NO deben tomarse como la opinión de un especialista. Consulta a tu médico si tienes dudas.]')
+      
 
 with st.form('form_save_data'):
 
@@ -113,8 +116,14 @@ with st.form('form_save_data'):
       if submit_data:
 
             if to_save=='Sí': 
-                  st.session_state.result_global.update({'real_obesity': int(real_obesity[:1])}) 
-                  st.session_state.result_global.update({'comment': comment}) 
-                  result_save = save_obesity_info(st.session_state.result_global)
+                  try:
+                        if st.session_state.result_global:
+                              st.session_state.result_global.update({'real_obesity': int(real_obesity[:1])}) 
+                              st.session_state.result_global.update({'comment': comment}) 
+                              result_save = save_obesity_info(st.session_state.result_global)
+                              if result_save: st.success('¡La información fue guardada exitosamente!')
 
-                  if result_save: st.success('¡La información fue guardada exitosamente!')
+                  except Exception as e:
+                        # Manejar cualquier otro error inesperado
+                        st.error("Debes entrar primero los datos y hacer una predicción")
+                        st.stop()

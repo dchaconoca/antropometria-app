@@ -17,6 +17,7 @@ page_config()
 #sidebar_config()
 
 def delete_obesity(df):
+    deleted = False
     for index, row in df.iterrows():
 
         if row['Eliminar']:
@@ -30,7 +31,10 @@ def delete_obesity(df):
                         'creation_date': row['creation_date']
                     }
             obesity_delete_new_data(params)
-            return True
+
+            deleted = True
+    
+    return deleted
 
 
 st.subheader('Ver y descargar nuevos datos')
